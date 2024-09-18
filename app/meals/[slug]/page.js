@@ -2,6 +2,19 @@ import { getMeal } from "@/lib/meal";
 import Image from "next/image";
 import classes from "./page.module.css";
 import { notFound } from "next/navigation";
+
+export async function generateMetadata({ params }){
+  const meal = getMeal(params.slug);
+
+  if (!meal) {
+    notFound();
+  }
+  return {
+    title:meal.title,
+    description:meal.summary,
+  };
+}
+
 export default function SlugFunction({ params }) {
   const meal = getMeal(params.slug);
 
@@ -13,7 +26,7 @@ export default function SlugFunction({ params }) {
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={meal.image} fill />
+          <Image src={meal.image} alt='food Image' fill />
         </div>
         <div className={classes.headerText}>
           <h1>{meal.title}</h1>
